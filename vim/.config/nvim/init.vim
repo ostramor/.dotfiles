@@ -142,9 +142,9 @@ set guifont=Monospace\ 14
 "set t_Co=256
 "let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
-set background=light
-let g:solarized_visibility = "low"
-colorscheme solarized
+"set background=light
+"let g:solarized_visibility = "low"
+"colorscheme solarized
 
 " Enable verilog navigation
 nnoremap <leader>u :VerilogGotoInstanceStart<CR>
