@@ -22,6 +22,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'lifepillar/vim-solarized8'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
 Plug 'junegunn/vim-easy-align'
 Plug 'andrewradev/switch.vim'
 call plug#end()
