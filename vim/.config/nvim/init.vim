@@ -7,24 +7,26 @@ set nocompatible
 set path+=**
 set wildmenu
 
+" Install vimplug if it does not exist
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " Helps force plugins to load correctly when it is turned back on below
 filetype off
 
-"Plugins will be downloaded under the specified directory.
+" Plugins
 call plug#begin('~/.vim/plugged')
-
-" Declare the list of plugins.
+Plug 'lifepillar/vim-solarized8'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
-Plug 'altercation/vim-colors-solarized'
-Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/vim-easy-align'
+call plug#end()
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
-
 
 " Turn on syntax highlighting
 syntax on
@@ -35,23 +37,21 @@ filetype plugin indent on
 " Pick a leader key
 let mapleader = ","
 
-" Security
-set modelines=0
-
 " Show line numbers
 set number
 set relativenumber
 
+" Enable huge cursor crosshair
 set cursorline
 set cursorcolumn
-"hi CursorLine term=bold cterm=bold ctermbg=LightGrey
-"hi LineNr term=bold cterm=bold ctermbg=Grey
-"hi CursorLineNr term=bold cterm=bold ctermfg=Red ctermbg=LightBlue
+
+" Enable mouse interaction
+set mouse=a
 
 " Show file stats
 set ruler
 
-" Blink cursor on error instead of beeping (grr)
+" Blink cursor on error instead of beeping
 set visualbell
 
 " Whitespace
@@ -77,44 +77,18 @@ nnoremap k gk
 " Show opening bracket right after closing
 set showmatch
 
-" Allow hidden buffers
-set hidden
-
 " Auto-save
 set autowrite
-
-" Rendering
-set ttyfast
-
-" Status bar
-set laststatus=2
-
-" Last line
-set showmode
-set showcmd
 
 " Searching
 set hlsearch
 set incsearch
-"set ignorecase
-"set smartcase
 set showmatch
 map <leader><space> :let @/=''<cr> " clear search
-
-" Remap help key.
-inoremap <F1> <ESC>:set invfullscreen<CR>a
-nnoremap <F1> :set invfullscreen<CR>
-vnoremap <F1> :set invfullscreen<CR>
-
-" Map NERDTreeToggle
-nnoremap <F5> :NERDTreeToggle<CR>
 
 " Make shift insert work like in Xterm
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
-
-" Formatting
-map <leader>q gqip
 
 " Setup dictionary
 set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
@@ -131,20 +105,9 @@ set nrformats-=octal
 " Visualize tabs and newlines
 set listchars=tab:▸\ ,eol:¬,extends:>,precedes:<,space:·
 set list
+
 " Or use your leader key + l to toggle on/off
 map <leader>l :set list!<CR> " Toggle tabs and EOL
-
-" Font
-set guifont=Monospace\ 14
-
-" Color scheme (terminal)
-"set t_Co=16
-"set t_Co=256
-"let g:solarized_termcolors=256
-"let g:solarized_termtrans=1
-"set background=light
-"let g:solarized_visibility = "low"
-"colorscheme solarized
 
 " Enable verilog navigation
 nnoremap <leader>u :VerilogGotoInstanceStart<CR>
@@ -152,9 +115,28 @@ nnoremap <leader>i :VerilogFollowInstance<CR>
 nnoremap <leader>o :VerilogFollowPort<CR>
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
- xmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
- nmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" Enable 24bit color if possible
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8d = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+" Set theme
+set background=light
+colorscheme solarized8
+let g:solarized_old_cursor_style = 1
+let g:solarized_visibility = "low"
+
+
+
+""""""""
+" TODO "
+""""""""
 
 " Generate tag file
 " Valid version:
@@ -164,6 +146,7 @@ nnoremap <leader>o :VerilogFollowPort<CR>
 "      Compiled: Jan 27 2020, 18:20:04
 "      URL: https://ctags.io/
 "      Optional compiled features: +wildcards, +regex, +iconv, +option-directory, +xpath, +packcc
+" TODO: Change this so it uses an external script or something to make this more portable
 command! TagsWS execute "!find -L $VC_WORKSPACE/ip/*/{rtl,sim} -regex '.*\.svh?' -exec ctags --language-force=systemverilog --tag-relative=yes --extras=+q --fields=+i {} +"
 command! Tags execute "!find -L -regex '.*\.svh?' -exec ctags --language-force=systemverilog --tag-relative=yes --extras=+q --fields=+i {} +"
 nnoremap <F4> :Tags<CR>
