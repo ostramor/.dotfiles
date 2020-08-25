@@ -23,6 +23,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
+Plug 'andrewradev/switch.vim'
 call plug#end()
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -54,18 +55,18 @@ set ruler
 " Blink cursor on error instead of beeping
 set visualbell
 
-" Whitespace
+"Formatting settings
 set nowrap
 set textwidth=79
-set formatoptions=tcqrn1
+set formatoptions=cqrn1jpo
+set formatlistpat="^\s*\d\+[\]:.)}\t -]\s*"
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-set noshiftround
 
 " Cursor motion
-set scrolloff=3
+set scrolloff=5
 set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
@@ -107,7 +108,7 @@ set listchars=tab:▸\ ,eol:¬,extends:>,precedes:<,space:·
 set list
 
 " Or use your leader key + l to toggle on/off
-map <leader>l :set list!<CR> " Toggle tabs and EOL
+map <leader>l :set list!<CR>
 
 " Enable verilog navigation
 nnoremap <leader>u :VerilogGotoInstanceStart<CR>
@@ -126,17 +127,30 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-" Set theme
+" Set theme and toogle maps
+nnoremap <leader>b :let &background = &background == "dark" ? "light" : "dark"<CR>
 set background=light
-colorscheme solarized8
-let g:solarized_old_cursor_style = 1
+nnoremap <leader>v :let g:solarized_visibility = g:solarized_visibility == "low" ? "medium" : g:solarized_visibility == "medium" ? "high": "low"<CR>:colorscheme solarized8<CR>
 let g:solarized_visibility = "low"
+colorscheme solarized8
+
 
 
 
 """"""""
 " TODO "
 """"""""
+
+" Configuring switch.vim
+" TODO:
+" 1. Maybe isolate this into a single file I see a lot of stuff to be added here.
+" 2. Maybe turn this into a plugin, maybe talk with Vitor Antunes.
+" 3. Maybe parse the code looking for enums, this could be hard due to scope.
+nnoremap <leader>n :Switch<CR>
+let g:switch_custom_definitions =
+    \ [
+    \   ['UVM_NONE', 'UVM_LOW', 'UVM_MEDIUM', 'UVM_HIGH', 'UVM_FULL', 'UVM_DEBUG']
+    \ ]
 
 " Generate tag file
 " Valid version:
