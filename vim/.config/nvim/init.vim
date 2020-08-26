@@ -26,6 +26,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'junegunn/vim-easy-align'
 Plug 'andrewradev/switch.vim'
+Plug 'yuttie/comfortable-motion.vim'
 call plug#end()
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -135,6 +136,13 @@ set background=light
 nnoremap <leader>v :let g:solarized_visibility = g:solarized_visibility == "low" ? "medium" : g:solarized_visibility == "medium" ? "high": "low"<CR>:colorscheme solarized8<CR>
 let g:solarized_visibility = "low"
 colorscheme solarized8
+
+" Configuring comfortable-motion
+let g:comfortable_motion_no_default_key_mappings = 1
+noremap <silent> <ScrollWheelDown> :call comfortable_motion#flick(40)<CR>
+noremap <silent> <ScrollWheelUp>   :call comfortable_motion#flick(-40)<CR>
+noremap <silent> <A-j>             :call comfortable_motion#flick(100)<CR>
+noremap <silent> <A-k>             :call comfortable_motion#flick(-100)<CR>
 
 
 
